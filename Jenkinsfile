@@ -37,7 +37,7 @@ pipeline {
 		stage("test") {
             when {
                 expression {
-                    if params.executeTests
+                    if params.executeTests == True
                     //BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
                 }
             }
