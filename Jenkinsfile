@@ -6,7 +6,7 @@ pipeline {
         SERVER_CREDENTIALS = Credentilas('server-credentials')
     }*/
 	agent any
-    paramters {
+    parameters {
         //string(name: 'VERSION', defualtValue: '',description: 'version to deploy on prod')
         choice(name: 'VERSION', choices:['1.1.0','1.2.0','1.3.0'],description: '')
         booleanParam(name: 'executeTests',defualtValue: 'True',description: '')
@@ -37,8 +37,8 @@ pipeline {
 		stage("test") {
             when {
                 expression {
-                	params.executeTests
-                    	//BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
+                    params.executeTests
+                    //BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
                 }
             }
 			steps {
@@ -60,7 +60,7 @@ pipeline {
 	   always {
 		    echo "Completed...!"
 	   }
-	   failure {
+	   success {
         
 	   }
 	}
