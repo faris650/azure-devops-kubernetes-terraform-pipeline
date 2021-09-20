@@ -1,3 +1,5 @@
+
+def gv
 pipeline {
     /*environment {
         NEW_VERSION = '1.3.0'
@@ -14,11 +16,22 @@ pipeline {
         Gradle
     }*/
 	stages {
+ 		stage("init") {           
+			steps {
+                //script block to load groovy script
+                script {
+                    gv = load "script.groovy"
+                }
+			}
+		}       
 		stage("build") {           
 			steps {
-			  echo 'building the application'
-              //echo "building version ${NEW_VERSION}"
-              //echo "building with credential ${SEREVER_CREDENTIALS}"
+                script{
+                    gv.buildApp()
+                }
+			    echo 'building the application'
+                //echo "building version ${NEW_VERSION}"
+                //echo "building with credential ${SEREVER_CREDENTIALS}"
 			}
 		}
 		stage("test") {
@@ -29,19 +42,23 @@ pipeline {
                 }
             }
 			steps {
-			  echo 'testing the application'
+			    script {
+                    gv.testApp()
+                }
 			}
 		}
 		stage("deploy") {
 			steps {
-			  echo 'deploying the application'
-              echo "deploying version ${params.VERSION}"
+                script {
+                    gv.deploApp()
+                    //All environment variables in Jenkins are avaialable in groovy script
+                }
 			}
 		}
 	}
 	post {
 	   always {
-		echo "Completed...!"
+		    echo "Completed...!"
 	   }
 	   failure {
         
